@@ -94,17 +94,38 @@ class ContractGeneratorLauncher:
         print("\n📁 Шаг 1: Выбор директории конфигурации")
         print("-" * 40)
         
-        # Проверяем стандартные пути
+        # Ищем папки с файлами конфигурации 1С
         default_paths = ["conf_files", "src", "."]
         existing_paths = []
         
         for path in default_paths:
             if os.path.exists(path):
-                existing_paths.append(path)
-                print(f"  ✅ {path}")
+                # Проверяем, есть ли в папке файлы конфигурации 1С
+                has_config_files = False
+                try:
+                    for root, dirs, files in os.walk(path):
+                        # Ищем папки с объектами 1С
+                        if any(folder in dirs for folder in ['Catalogs', 'Documents', 'Reports', 'DataProcessors']):
+                            has_config_files = True
+                            break
+                        # Ищем XML файлы объектов
+                        for file in files:
+                            if file.endswith('.xml') and not file.startswith('Form'):
+                                has_config_files = True
+                                break
+                        if has_config_files:
+                            break
+                except:
+                    pass
+                
+                if has_config_files:
+                    existing_paths.append(path)
+                    print(f"  ✅ {path} (найдены файлы конфигурации)")
+                else:
+                    print(f"  ⚠️  {path} (файлы конфигурации не найдены)")
         
         if existing_paths:
-            print(f"\nНайдены существующие директории:")
+            print(f"\nНайдены директории с файлами конфигурации:")
             for i, path in enumerate(existing_paths, 1):
                 print(f"  {i}. {path}")
             
@@ -123,8 +144,29 @@ class ContractGeneratorLauncher:
                     else:
                         # Пользователь ввел путь
                         if os.path.exists(choice):
-                            print(f"✅ Выбрана директория: {choice}")
-                            return choice
+                            # Проверяем, есть ли файлы конфигурации
+                            has_config = False
+                            try:
+                                for root, dirs, files in os.walk(choice):
+                                    if any(folder in dirs for folder in ['Catalogs', 'Documents', 'Reports', 'DataProcessors']):
+                                        has_config = True
+                                        break
+                                    for file in files:
+                                        if file.endswith('.xml') and not file.startswith('Form'):
+                                            has_config = True
+                                            break
+                                    if has_config:
+                                        break
+                            except:
+                                pass
+                            
+                            if has_config:
+                                print(f"✅ Выбрана директория: {choice}")
+                                return choice
+                            else:
+                                print(f"⚠️  В директории не найдены файлы конфигурации 1С: {choice}")
+                                print("   Ожидаются папки: Catalogs, Documents, Reports, DataProcessors")
+                                print("   Или XML файлы объектов (не форм)")
                         else:
                             print(f"❌ Директория не найдена: {choice}")
                             
@@ -132,12 +174,37 @@ class ContractGeneratorLauncher:
                     print("\n\n❌ Операция отменена пользователем.")
                     sys.exit(0)
         else:
-            # Не найдено стандартных путей
+            # Не найдено папок с файлами конфигурации
+            print("⚠️  Не найдено папок с файлами конфигурации 1С")
+            print("   Ожидаются папки: Catalogs, Documents, Reports, DataProcessors")
+            print("   Или XML файлы объектов (не форм)")
+            
             while True:
-                path = input("Введите путь к директории конфигурации: ").strip()
+                path = input("Введите путь к директории с файлами конфигурации 1С: ").strip()
                 if os.path.exists(path):
-                    print(f"✅ Выбрана директория: {path}")
-                    return path
+                    # Проверяем, есть ли файлы конфигурации
+                    has_config = False
+                    try:
+                        for root, dirs, files in os.walk(path):
+                            if any(folder in dirs for folder in ['Catalogs', 'Documents', 'Reports', 'DataProcessors']):
+                                has_config = True
+                                break
+                            for file in files:
+                                if file.endswith('.xml') and not file.startswith('Form'):
+                                    has_config = True
+                                    break
+                            if has_config:
+                                break
+                    except:
+                        pass
+                    
+                    if has_config:
+                        print(f"✅ Выбрана директория: {path}")
+                        return path
+                    else:
+                        print(f"⚠️  В директории не найдены файлы конфигурации 1С: {path}")
+                        print("   Ожидаются папки: Catalogs, Documents, Reports, DataProcessors")
+                        print("   Или XML файлы объектов (не форм)")
                 else:
                     print(f"❌ Директория не найдена: {path}")
     
@@ -148,17 +215,19 @@ class ContractGeneratorLauncher:
         
         # Ищем файлы отчетов в стандартных местах
         report_paths = []
-        search_dirs = ["conf_reports", "reports", self.conf_dir, "."]
+        search_dirs = ["conf_reports", "conf_report", "reports", self.conf_dir, "."]
         
         for search_dir in search_dirs:
             if os.path.exists(search_dir):
                 for file in os.listdir(search_dir):
-                    if file.endswith(('.txt', '.report')) and 'report' in file.lower():
+                    # Ищем файлы отчетов конфигурации 1С
+                    if (file.endswith(('.txt', '.report')) and 
+                        any(keyword in file.lower() for keyword in ['report', 'отчет', 'конфигурац', 'config'])):
                         full_path = os.path.join(search_dir, file)
                         report_paths.append(full_path)
         
         if report_paths:
-            print("Найдены файлы отчетов:")
+            print("Найдены файлы отчетов конфигурации:")
             for i, path in enumerate(report_paths, 1):
                 print(f"  {i}. {path}")
             
@@ -177,8 +246,12 @@ class ContractGeneratorLauncher:
                     else:
                         # Пользователь ввел путь
                         if os.path.exists(choice):
-                            print(f"✅ Выбран файл: {choice}")
-                            return choice
+                            # Проверяем, что это текстовый файл
+                            if choice.endswith(('.txt', '.report')):
+                                print(f"✅ Выбран файл: {choice}")
+                                return choice
+                            else:
+                                print(f"⚠️  Файл должен быть текстовым (.txt или .report): {choice}")
                         else:
                             print(f"❌ Файл не найден: {choice}")
                             
@@ -187,11 +260,19 @@ class ContractGeneratorLauncher:
                     sys.exit(0)
         else:
             # Не найдено файлов отчетов
+            print("⚠️  Не найдено файлов отчетов конфигурации")
+            print("   Ожидаются файлы с именами: *report*.txt, *отчет*.txt, *config*.txt")
+            print("   Или файлы с расширением .report")
+            
             while True:
-                path = input("Введите путь к файлу отчета: ").strip()
+                path = input("Введите путь к файлу отчета конфигурации: ").strip()
                 if os.path.exists(path):
-                    print(f"✅ Выбран файл: {path}")
-                    return path
+                    # Проверяем, что это текстовый файл
+                    if path.endswith(('.txt', '.report')):
+                        print(f"✅ Выбран файл: {path}")
+                        return path
+                    else:
+                        print(f"⚠️  Файл должен быть текстовым (.txt или .report): {path}")
                 else:
                     print(f"❌ Файл не найден: {path}")
     
@@ -200,26 +281,58 @@ class ContractGeneratorLauncher:
         print("\n📂 Шаг 3: Выбор выходной директории")
         print("-" * 40)
         
+        # Предлагаем варианты
         default_output = "metadata_contracts"
-        print(f"По умолчанию: {default_output}")
+        current_dir = os.getcwd()
+        
+        print("Варианты размещения результатов:")
+        print(f"  1. 📁 Локальная папка: {default_output}")
+        print(f"  2. 📁 Текущая директория: {current_dir}")
+        print(f"  3. 📁 Абсолютный путь (например: C:\\YourProject\\YourConfig\\metadata_contracts)")
+        print(f"  4. 📁 Рядом с конфигурацией: {os.path.dirname(self.conf_dir)}\\metadata_contracts")
         
         while True:
             try:
-                choice = input("Использовать по умолчанию? (y/n): ").strip().lower()
+                choice = input("\nВыберите вариант (1-4) или введите путь: ").strip()
                 
-                if choice in ['y', 'yes', 'да', 'д']:
-                    print(f"✅ Используется директория по умолчанию: {default_output}")
+                if choice == "1":
+                    print(f"✅ Используется локальная папка: {default_output}")
                     return default_output
-                elif choice in ['n', 'no', 'нет', 'н']:
-                    path = input("Введите путь к выходной директории: ").strip()
+                elif choice == "2":
+                    print(f"✅ Используется текущая директория: {current_dir}")
+                    return current_dir
+                elif choice == "3":
+                    path = input("Введите абсолютный путь: ").strip()
                     if path:
-                        print(f"✅ Выбрана директория: {path}")
-                        return path
+                        # Создаем папку, если не существует
+                        try:
+                            os.makedirs(path, exist_ok=True)
+                            print(f"✅ Создана/используется папка: {path}")
+                            return path
+                        except Exception as e:
+                            print(f"❌ Ошибка создания папки: {e}")
                     else:
                         print("❌ Путь не может быть пустым.")
+                elif choice == "4":
+                    suggested_path = os.path.join(os.path.dirname(self.conf_dir), "metadata_contracts")
+                    try:
+                        os.makedirs(suggested_path, exist_ok=True)
+                        print(f"✅ Создана/используется папка: {suggested_path}")
+                        return suggested_path
+                    except Exception as e:
+                        print(f"❌ Ошибка создания папки: {e}")
                 else:
-                    print("❌ Пожалуйста, введите 'y' или 'n'.")
-                    
+                    # Пользователь ввел путь
+                    if choice:
+                        try:
+                            os.makedirs(choice, exist_ok=True)
+                            print(f"✅ Создана/используется папка: {choice}")
+                            return choice
+                        except Exception as e:
+                            print(f"❌ Ошибка создания папки: {e}")
+                    else:
+                        print("❌ Путь не может быть пустым.")
+                        
             except KeyboardInterrupt:
                 print("\n\n❌ Операция отменена пользователем.")
                 sys.exit(0)

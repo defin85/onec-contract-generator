@@ -27,9 +27,9 @@ python scripts/generate.py
 
 ```bash
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
-  --output-dir "C:\1CProject\DO_Rolf\metadata_contracts"
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
+  --output-dir "C:\YourProject\YourConfig\metadata_contracts"
 ```
 
 ### 3. Анализ результатов
@@ -89,17 +89,17 @@ metadata_contracts/
 
 ```bash
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
-  --output-dir "C:\1CProject\DO_Rolf\metadata_contracts"
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
+  --output-dir "C:\YourProject\YourConfig\metadata_contracts"
 ```
 
 ### Пример 2: Только контракты метаданных
 
 ```bash
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
   --skip-forms --skip-modules
 ```
 
@@ -107,8 +107,8 @@ python scripts/generate.py --auto \
 
 ```bash
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
   --skip-metadata --skip-modules
 ```
 
@@ -224,8 +224,8 @@ ls -la conf_report/
 
 # Используйте абсолютный путь
 python scripts/generate.py --auto \
-  --conf-dir "C:\absolute\path\to\conf_files" \
-  --report-path "C:\absolute\path\to\conf_report\ОтчетПоКонфигурации.txt"
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt"
 ```
 
 ### Проблема: "Директория конфигурации не найдена"
@@ -297,7 +297,7 @@ ls -la scripts/
 ## 📊 Результаты тестирования
 
 ### ✅ **Успешно протестировано на реальных данных:**
-- **Конфигурация**: DO_Rolf (33MB отчет)
+- **Конфигурация**: YourProject (33MB отчет)
 - **Модули**: 3,451 объект обработан
 - **Формы**: Множество форм создано (включая проблемную `рлф_ФормаСпискаСПапками`)
 - **Метаданные**: Структурированные контракты

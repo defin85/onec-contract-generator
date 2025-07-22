@@ -6,7 +6,7 @@
 
 ```bash
 # 1. Перейдите в директорию проекта
-cd 1c-contract-generator
+cd onec-contract-generator
 
 # 2. Запустите интерактивный режим
 python scripts/generate.py
@@ -19,9 +19,9 @@ python scripts/generate.py
 ```bash
 # Запуск с реальными данными
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
-  --output-dir "C:\1CProject\DO_Rolf\metadata_contracts"
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
+  --output-dir "C:\YourProject\YourConfig\metadata_contracts"
 ```
 
 **Результат**: Автоматическая генерация всех контрактов.
@@ -59,7 +59,7 @@ python scripts/generate.py --auto \
       }
     ]
   },
-  "generated_at": "C:\\1CProject\\onec-contract-generator",
+  "generated_at": "C:\\YourProject\\onec-contract-generator",
   "source": "Text Report"
 }
 ```
@@ -79,7 +79,7 @@ python scripts/generate.py --auto \
     "elements": [],
     "attributes": []
   },
-  "generated_at": "C:\\1CProject\\onec-contract-generator",
+  "generated_at": "C:\\YourProject\\onec-contract-generator",
   "source": "XML Form Description"
 }
 ```
@@ -109,7 +109,7 @@ python scripts/generate.py --auto \
       ]
     }
   ],
-  "generated_at": "C:\\1CProject\\onec-contract-generator",
+  "generated_at": "C:\\YourProject\\onec-contract-generator",
   "source": "XML Module Description"
 }
 ```
@@ -120,8 +120,8 @@ python scripts/generate.py --auto \
 
 ```bash
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
   --skip-forms --skip-modules
 ```
 
@@ -129,8 +129,8 @@ python scripts/generate.py --auto \
 
 ```bash
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
   --skip-metadata --skip-modules
 ```
 
@@ -138,8 +138,8 @@ python scripts/generate.py --auto \
 
 ```bash
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
   --skip-metadata --skip-forms
 ```
 
@@ -196,8 +196,8 @@ python scripts/analyze.py --action validate
 
 ```
 🔄 Генерация контрактов метаданных...
-  📖 Читаю отчет: C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt
-  🧹 Очищаю целевую папку: C:\1CProject\DO_Rolf\metadata_contracts
+  📖 Читаю отчет: C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt
+  🧹 Очищаю целевую папку: C:\YourProject\YourConfig\metadata_contracts
 
 📋 Сводка по генерации контрактов метаданных:
 ==================================================
@@ -221,7 +221,7 @@ python scripts/analyze.py --action validate
 
 ```
 🔄 Генерация контрактов форм...
-  🧹 Очищаю целевую папку: C:\1CProject\DO_Rolf\metadata_contracts\Формы
+  🧹 Очищаю целевую папку: C:\YourProject\YourConfig\metadata_contracts\Формы
 
 📋 Сводка по генерации контрактов форм:
 ==================================================
@@ -396,7 +396,7 @@ project/
 │   ├── Документы/
 │   ├── Формы/
 │   └── Модули/
-└── 1c-contract-generator/         # Система генерации
+└── onec-contract-generator/       # Система генерации
 ```
 
 ### 2. Версионирование

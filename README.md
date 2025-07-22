@@ -1,4 +1,4 @@
-# 🚀 1C Contract Generator
+# 🚀 OneC Contract Generator
 
 **Система генерации контрактов метаданных 1С**
 
@@ -17,7 +17,7 @@
 ## 🏗️ Структура проекта
 
 ```
-1c-contract-generator/
+onec-contract-generator/
 ├── src/                                    # Исходный код
 │   ├── core/                               # Основные компоненты
 │   │   ├── launcher.py                     # 🚀 Единый запускатор
@@ -50,10 +50,10 @@ Python 3.7+
 ```bash
 # Клонируйте репозиторий
 git clone <repository-url>
-cd 1c-contract-generator
+cd onec-contract-generator
 
 # Или скопируйте папку в ваш проект
-cp -r 1c-contract-generator /path/to/your/project/
+cp -r onec-contract-generator /path/to/your/project/
 ```
 
 ### Использование
@@ -75,9 +75,9 @@ python scripts/generate.py
 
 ```bash
 python scripts/generate.py --auto \
-  --conf-dir "C:\1CProject\DO_Rolf\conf_files" \
-  --report-path "C:\1CProject\DO_Rolf\conf_report\ОтчетПоКонфигурации.txt" \
-  --output-dir "C:\1CProject\DO_Rolf\metadata_contracts"
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
+  --output-dir "C:\YourProject\YourConfig\metadata_contracts"
 ```
 
 #### Анализ контрактов
@@ -130,7 +130,7 @@ python scripts/test.py
       }
     ]
   },
-  "generated_at": "C:\\1CProject\\onec-contract-generator",
+  "generated_at": "C:\\YourProject\\onec-contract-generator",
   "source": "Text Report"
 }
 ```
@@ -150,7 +150,7 @@ python scripts/test.py
     "elements": [],
     "attributes": []
   },
-  "generated_at": "C:\\1CProject\\onec-contract-generator",
+  "generated_at": "C:\\YourProject\\onec-contract-generator",
   "source": "XML Form Description"
 }
 ```
@@ -180,7 +180,7 @@ python scripts/test.py
       ]
     }
   ],
-  "generated_at": "C:\\1CProject\\onec-contract-generator",
+  "generated_at": "C:\\YourProject\\onec-contract-generator",
   "source": "XML Module Description"
 }
 ```
@@ -234,7 +234,7 @@ project/
 │   └── Forms/
 ├── conf_report/                   # Отчеты конфигурации
 │   └── ОтчетПоКонфигурации.txt
-└── 1c-contract-generator/         # Система генерации
+└── onec-contract-generator/       # Система генерации
 ```
 
 ## 📚 Документация
@@ -289,7 +289,7 @@ python scripts/test.py
 ## 📊 Результаты тестирования
 
 ### ✅ **Успешно протестировано на реальных данных:**
-- **Конфигурация**: DO_Rolf (33MB отчет)
+- **Конфигурация**: YourProject (33MB отчет)
 - **Модули**: 3,451 объект обработан
 - **Формы**: Множество форм создано
 - **Метаданные**: Структурированные контракты

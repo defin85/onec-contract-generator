@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Setup script для 1C Contract Generator.
+Setup script для OneC Contract Generator.
 """
 
 from setuptools import setup, find_packages

@@ -128,7 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# 1C Contract Generator specific
+# OneC Contract Generator specific
 metadata_contracts/
 conf_files/
 conf_reports/

@@ -47,12 +47,15 @@ class FormGenerator:
     def clean_output_directory(self):
         """Очищает целевую папку от старых файлов контрактов форм."""
         if self.output_dir.exists():
-            print(f"  🧹 Очищаю целевую папку: {self.output_dir}")
+            self.log("info", f"Очищаю целевую папку: {self.output_dir}")
             try:
-                # Удаляем все файлы .json в папке
-                for json_file in self.output_dir.glob("*.json"):
+                # Удаляем только файлы .json, сохраняя структуру папок
+                deleted_files = 0
+                for json_file in self.output_dir.rglob("*.json"):
                     json_file.unlink()
-                self.log("info", f"Очищена папка: {self.output_dir}")
+                    deleted_files += 1
+                
+                self.log("success", f"Очищена папка: удалено {deleted_files} файлов")
             except Exception as e:
                 self.log("error", f"Ошибка при очистке папки: {e}")
         else:

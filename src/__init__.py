@@ -1,11 +1,11 @@
 """
-1C Contract Generator - Система генерации контрактов метаданных 1С
+OneC Contract Generator - Система генерации контрактов метаданных 1С
 
 Основной пакет для генерации контрактов метаданных, форм и модулей 1С.
 """
 
 __version__ = "2.0.0"
-__author__ = "1C Contract Generator Team"
+__author__ = "OneC Contract Generator Team"
 __description__ = "Система генерации контрактов метаданных 1С"
 
 from .core.launcher import ContractGeneratorLauncher
