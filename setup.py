@@ -11,14 +11,14 @@ this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text(encoding='utf-8')
 
 setup(
-    name="onec-contract-generator",  # Изменено на более уникальное имя
-    version="2.0.0",
-    author="Your Name",  # Замените на ваше имя
-    author_email="your.email@example.com",  # Замените на ваш email
-    description="Система генерации контрактов метаданных 1С",
+    name="onec-contract-generator",
+    version="2.1.0",
+    author="1C Contract Generator Team",
+    author_email="support@onec-contract-generator.dev",
+    description="Autonomous system for generating structured JSON contracts from 1C:Enterprise configurations",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/your-username/1c-contract-generator",  # Замените на ваш репозиторий
+    url="https://github.com/onec-contract-generator/onec-contract-generator",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     classifiers=[
@@ -36,10 +36,12 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Code Generators",
         "Topic :: Office/Business :: Financial :: Accounting",
+        "Topic :: Text Processing :: Markup :: XML",
+        "Topic :: Software Development :: Documentation",
     ],
     python_requires=">=3.7",
     install_requires=[
-        # Основные зависимости (пока пустые, так как используем только стандартную библиотеку)
+        # Используем только стандартную библиотеку Python
     ],
     extras_require={
         "dev": [
@@ -48,6 +50,10 @@ setup(
             "black>=21.0.0",
             "flake8>=3.8.0",
             "mypy>=0.800",
+        ],
+        "docs": [
+            "sphinx>=4.0.0",
+            "sphinx-rtd-theme>=1.0.0",
         ],
     },
     entry_points={
@@ -59,10 +65,11 @@ setup(
     },
     include_package_data=True,
     zip_safe=False,
-    keywords="1c, enterprise, metadata, contracts, generation, analysis",
+    keywords="1c, enterprise, metadata, contracts, generation, analysis, json, xml, documentation",
     project_urls={
-        "Bug Reports": "https://github.com/your-username/1c-contract-generator/issues",
-        "Source": "https://github.com/your-username/1c-contract-generator",
-        "Documentation": "https://github.com/your-username/1c-contract-generator#readme",
+        "Bug Reports": "https://github.com/onec-contract-generator/onec-contract-generator/issues",
+        "Source": "https://github.com/onec-contract-generator/onec-contract-generator",
+        "Documentation": "https://github.com/onec-contract-generator/onec-contract-generator#readme",
+        "Changelog": "https://github.com/onec-contract-generator/onec-contract-generator/blob/main/CHANGELOG.md",
     },
 ) 

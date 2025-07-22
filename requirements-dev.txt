@@ -1,0 +1,24 @@
+# OneC Contract Generator - Development Dependencies
+
+# Testing
+pytest>=6.0.0
+pytest-cov>=2.10.0
+pytest-mock>=3.6.0
+
+# Code Quality
+black>=21.0.0
+flake8>=3.8.0
+mypy>=0.800
+isort>=5.0.0
+
+# Documentation
+sphinx>=4.0.0
+sphinx-rtd-theme>=1.0.0
+
+# Build tools
+setuptools>=45
+wheel>=0.37.0
+setuptools_scm[toml]>=6.2
+
+# Development tools
+pre-commit>=2.15.0 
