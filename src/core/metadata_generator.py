@@ -490,7 +490,7 @@ class MetadataGenerator:
         if not objects:
             self.log("error", "Не удалось извлечь объекты из отчета")
             self.print_logs()
-            return False
+            return False 
         
         # Генерируем контракты
         success_count = 0

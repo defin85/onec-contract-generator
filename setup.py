@@ -12,7 +12,7 @@ long_description = (this_directory / "README.md").read_text(encoding='utf-8')
 
 setup(
     name="onec-contract-generator",
-    version="2.1.0",
+    version="2.2.0",
     author="1C Contract Generator Team",
     author_email="support@onec-contract-generator.dev",
     description="Autonomous system for generating structured JSON contracts from 1C:Enterprise configurations",
@@ -24,7 +24,7 @@ setup(
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
+
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",

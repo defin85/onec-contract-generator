@@ -4,17 +4,50 @@
 
 Система OneC Contract Generator предоставляет API для генерации контрактов метаданных из конфигураций 1С.
 
+## 🚀 Установка и импорт
+
+### Установка
+
+```bash
+# Через pip
+pip install onec-contract-generator
+
+# Или ручная установка
+git clone <repository-url>
+cd onec-contract-generator
+pip install -r requirements.txt
+```
+
+### Импорт
+
+```python
+# Основные компоненты
+from core.launcher import ContractGeneratorLauncher
+from core.metadata_generator import MetadataGenerator
+from core.form_generator import FormGenerator
+from core.module_generator import ModuleGenerator
+
+# Или импорт всего пакета
+import onec_contract_generator
+
+# При ручной установке используйте относительные импорты
+from src.core.launcher import ContractGeneratorLauncher
+from src.core.metadata_generator import MetadataGenerator
+from src.core.form_generator import FormGenerator
+from src.core.module_generator import ModuleGenerator
+```
+
 ## 🚀 Launcher API
 
-### Класс `Launcher`
+### Класс `ContractGeneratorLauncher`
 
 Основной класс для запуска системы генерации контрактов.
 
 ```python
-from src.core.launcher import Launcher
+from core.launcher import ContractGeneratorLauncher
 
 # Создание экземпляра
-launcher = Launcher()
+launcher = ContractGeneratorLauncher()
 
 # Запуск интерактивного режима
 launcher.run_interactive_mode()
@@ -47,7 +80,7 @@ launcher.run_auto_mode()
 Генератор контрактов метаданных объектов.
 
 ```python
-from src.core.metadata_generator import MetadataGenerator
+from core.metadata_generator import MetadataGenerator
 
 # Создание экземпляра
 generator = MetadataGenerator(
@@ -100,11 +133,36 @@ __init__(self, report_path: str, output_dir: str)
 Добавляет сообщение в лог.
 
 **Параметры**:
-- `category` (str): Категория сообщения (info, success, warning, error, summary)
-- `message` (str): Текст сообщения
+- `category` (str): Категория лога (info, success, warning, error, summary)
+- `message` (str): Сообщение
 
-##### `print_logs()`
-Выводит сгруппированные логи.
+##### `_get_category_for_type(object_type: str) -> str`
+Определяет категорию для типа объекта.
+
+**Параметры**:
+- `object_type` (str): Тип объекта
+
+**Возвращает**: `str` - категория объекта
+
+#### Поддерживаемые типы объектов
+
+```python
+ALLOWED_ROOT_TYPES = [
+    "Конфигурации", "Языки", "Подсистемы", "Роли", "ПланыСчетов",
+    "РегистрыБухгалтерии", "РегистрыРасчета", "ПланыВидовРасчета",
+    "ПланыВидовСчетов", "ПланыВидовНоменклатуры", "ПланыВидовСвойств",
+    "ПланыВидовСчетовБухгалтерии", "ПланыВидовСчетовНалоговогоУчета",
+    "Перечисления", "ОбщиеМодули", "HTTPСервисы", "WebСервисы",
+    "XDTOПакеты", "Стили", "ЭлементыСтиля", "ХранилищаНастроек",
+    "ПараметрыСеанса", "РегламентныеЗадания", "ЖурналыДокументов",
+    "ОпределяемыеТипы", "ОбщиеКартинки", "ОбщиеКоманды", "ОбщиеРеквизиты",
+    "ГруппыКоманд", "Боты", "ПодпискиНаСобытия", "ФункциональныеОпции",
+    "ПараметрыФункциональныхОпций", "КритерииОтбора", "ОбщиеШаблоны",
+    "Расширения", "Справочники", "Документы", "Отчеты", "Обработки",
+    "РегистрыСведений", "РегистрыНакопления", "ПланыВидовХарактерик",
+    "ПланыОбмена"
+]
+```
 
 ## 📝 Form Generator API
 
@@ -113,7 +171,7 @@ __init__(self, report_path: str, output_dir: str)
 Генератор контрактов форм.
 
 ```python
-from src.core.form_generator import FormGenerator
+from core.form_generator import FormGenerator
 
 # Создание экземпляра
 generator = FormGenerator(
@@ -121,7 +179,7 @@ generator = FormGenerator(
     output_dir="path/to/output"
 )
 
-# Генерация контрактов
+# Генерация контрактов форм
 success = generator.generate()
 ```
 
@@ -142,44 +200,35 @@ __init__(self, conf_dir: str, output_dir: str)
 
 **Возвращает**: `bool` - успешность выполнения
 
-##### `find_form_files() -> List[Path]`
-Находит все XML файлы форм в конфигурации.
+##### `find_form_files() -> List[str]`
+Находит все XML файлы форм.
 
-**Возвращает**: `List[Path]` - список путей к файлам форм
+**Возвращает**: `List[str]` - список путей к файлам форм
 
-##### `parse_form_xml(xml_path: Path) -> Optional[Dict[str, Any]]`
+##### `parse_form_file(file_path: str) -> Dict[str, Any]`
 Парсит XML файл формы.
 
 **Параметры**:
-- `xml_path` (Path): Путь к XML файлу
+- `file_path` (str): Путь к XML файлу формы
 
-**Возвращает**: `Optional[Dict[str, Any]]` - данные формы или None
+**Возвращает**: `Dict[str, Any]` - структура формы
 
-##### `generate_form_contract(form_data: Dict[str, Any], form_name: str) -> Dict[str, Any]`
+##### `generate_form_contract(form_data: Dict[str, Any]) -> Dict[str, Any]`
 Генерирует контракт формы.
 
 **Параметры**:
 - `form_data` (Dict[str, Any]): Данные формы
-- `form_name` (str): Имя формы
 
 **Возвращает**: `Dict[str, Any]` - контракт формы
-
-##### `process_form_file(xml_path: Path) -> bool`
-Обрабатывает один файл формы.
-
-**Параметры**:
-- `xml_path` (Path): Путь к XML файлу
-
-**Возвращает**: `bool` - успешность обработки
 
 ## 🔧 Module Generator API
 
 ### Класс `ModuleGenerator`
 
-Генератор контрактов модулей.
+Генератор контрактов модулей (заглушка).
 
 ```python
-from src.core.module_generator import ModuleGenerator
+from core.module_generator import ModuleGenerator
 
 # Создание экземпляра
 generator = ModuleGenerator(
@@ -187,7 +236,7 @@ generator = ModuleGenerator(
     output_dir="path/to/output"
 )
 
-# Генерация контрактов
+# Генерация контрактов модулей
 success = generator.generate()
 ```
 
@@ -204,22 +253,9 @@ __init__(self, conf_dir: str, output_dir: str)
 #### Методы
 
 ##### `generate() -> bool`
-Основной метод генерации контрактов модулей.
+Основной метод генерации контрактов модулей (заглушка).
 
-**Возвращает**: `bool` - успешность выполнения
-
-##### `find_module_files() -> List[Path]`
-Находит все XML файлы модулей.
-
-**Возвращает**: `List[Path]` - список путей к файлам модулей
-
-##### `parse_module_xml(xml_path: Path) -> Optional[Dict[str, Any]]`
-Парсит XML файл модуля.
-
-**Параметры**:
-- `xml_path` (Path): Путь к XML файлу
-
-**Возвращает**: `Optional[Dict[str, Any]]` - данные модуля или None
+**Возвращает**: `bool` - всегда True (заглушка)
 
 ## 📊 Структуры данных
 
@@ -227,29 +263,25 @@ __init__(self, conf_dir: str, output_dir: str)
 
 ```python
 {
-    "metadata_type": "Object",
-    "name": "Справочники.ДокументыПредприятия",
     "type": "Справочник",
-    "comment": "Описание объекта",
-    "structure": {
-        "attributes_count": 3,
-        "tabular_sections_count": 1,
-        "attributes": [
-            {
-                "name": "Наименование",
-                "type": "Строка",
-                "path": "Справочники.ДокументыПредприятия.Реквизиты.Наименование"
-            }
-        ],
-        "tabular_sections": [
-            {
-                "name": "Состав",
-                "type": "ТабличнаяЧасть",
-                "attributes": []
-            }
-        ]
+    "name": "Номенклатура",
+    "comment": "Номенклатура товаров и услуг",
+    "properties": [
+        {
+            "name": "Код",
+            "type": "Строка",
+            "length": 9,
+            "comment": "Код номенклатуры"
+        }
+    ],
+    "search_info": {
+        "type": "Справочник",
+        "category": "ОсновныеОбъекты",
+        "full_name": "Справочник_Номенклатура",
+        "search_keywords": ["Справочник", "Номенклатура", "товары", "услуги"],
+        "object_short_name": "Номенклатура"
     },
-    "generated_at": "path/to/generator",
+    "generated_at": "C:\\YourProject\\onec-contract-generator",
     "source": "Text Report"
 }
 ```
@@ -258,18 +290,20 @@ __init__(self, conf_dir: str, output_dir: str)
 
 ```python
 {
-    "metadata_type": "Form",
-    "name": "рлф_ФормаСпискаСПапками",
-    "synonym": "Форма списка с папками (Рольф)",
-    "comment": "Комментарий к форме",
-    "form_type": "Managed",
-    "structure": {
-        "elements_count": 0,
-        "attributes_count": 0,
-        "elements": [],
-        "attributes": []
-    },
-    "generated_at": "path/to/generator",
+    "form_type": "ФормаЭлемента",
+    "object_name": "Справочник.Номенклатура",
+    "form_name": "ФормаЭлементаФорма",
+    "synonym": "Форма элемента (Номенклатура)",
+    "comment": "Форма элемента справочника Номенклатура",
+    "controls": [
+        {
+            "name": "Код",
+            "type": "Поле",
+            "data_path": "Объект.Код",
+            "title": "Код"
+        }
+    ],
+    "generated_at": "C:\\YourProject\\onec-contract-generator",
     "source": "XML Form Description"
 }
 ```
@@ -278,109 +312,218 @@ __init__(self, conf_dir: str, output_dir: str)
 
 ```python
 {
-    "metadata_type": "Module",
-    "name": "ДокументыПредприятия_ModuleContract",
     "module_type": "ObjectModule",
+    "object_name": "Справочник.Номенклатура",
+    "module_name": "Номенклатура_ModuleContract",
     "functions": [
         {
             "name": "ПриСозданииНаСервере",
             "parameters": [],
-            "return_type": "void"
+            "return_type": "void",
+            "comment": "Обработчик события создания объекта"
         }
     ],
     "procedures": [
         {
-            "name": "ОбработкаЗаполнения",
+            "name": "ЗаполнитьИзДругогоОбъекта",
             "parameters": [
                 {
                     "name": "Источник",
-                    "type": "СправочникСсылка.ДокументыПредприятия"
+                    "type": "СправочникСсылка.Номенклатура",
+                    "comment": "Источник данных"
                 }
-            ]
+            ],
+            "comment": "Заполнение из другого объекта"
         }
     ],
-    "generated_at": "path/to/generator",
+    "generated_at": "C:\\YourProject\\onec-contract-generator",
     "source": "XML Module Description"
 }
 ```
 
-## 🔍 Обработка ошибок
+## 🔍 Категории объектов
 
-### Исключения
+### Основные объекты
+- **Справочники** - справочные данные
+- **Документы** - документооборот
+- **Отчеты** - отчетные формы
+- **Обработки** - обработки данных
 
-Все генераторы могут выбрасывать следующие исключения:
+### Регистры
+- **РегистрыСведений** - регистры сведений
+- **РегистрыНакопления** - регистры накопления
+- **РегистрыБухгалтерии** - регистры бухгалтерии
+- **РегистрыРасчета** - регистры расчета
 
-- `FileNotFoundError`: Файл не найден
-- `ET.ParseError`: Ошибка парсинга XML
-- `UnicodeDecodeError`: Ошибка кодировки
-- `Exception`: Общие ошибки
+### Планы
+- **ПланыВидовХарактеристик** - планы видов характеристик
+- **ПланыОбмена** - планы обмена
+- **ПланыСчетов** - планы счетов
+- **ПланыВидовРасчета** - планы видов расчета
 
-### Логирование
+### Общие объекты
+- **Перечисления** - перечисления
+- **ОбщиеМодули** - общие модули
+- **ОбщиеКартинки** - общие картинки
+- **ОбщиеКоманды** - общие команды
 
-Все генераторы поддерживают группированное логирование:
+### Сервисы
+- **HTTPСервисы** - HTTP сервисы
+- **WebСервисы** - Web сервисы
+- **XDTOПакеты** - XDTO пакеты
 
-```python
-# Добавление сообщения в лог
-generator.log("info", "Информационное сообщение")
-generator.log("success", "Успешно обработан файл")
-generator.log("warning", "Предупреждение")
-generator.log("error", "Ошибка обработки")
-generator.log("summary", "Сводка результатов")
-
-# Вывод логов
-generator.print_logs()
-```
-
-## 📋 Примеры использования
+## 📝 Примеры использования
 
 ### Базовый пример
 
 ```python
-from src.core.launcher import Launcher
+from core.launcher import ContractGeneratorLauncher
 
 # Создание и запуск
-launcher = Launcher()
-launcher.run_auto_mode()
+launcher = ContractGeneratorLauncher()
+success = launcher.generate_contracts()
+
+if success:
+    print("✅ Контракты сгенерированы успешно")
+else:
+    print("❌ Ошибка генерации контрактов")
 ```
 
 ### Прямое использование генераторов
 
 ```python
-from src.core.metadata_generator import MetadataGenerator
-from src.core.form_generator import FormGenerator
+from core.metadata_generator import MetadataGenerator
+from core.form_generator import FormGenerator
 
 # Генерация метаданных
-metadata_gen = MetadataGenerator("report.txt", "output")
-metadata_gen.generate()
+metadata_gen = MetadataGenerator(
+    report_path="conf_report/ОтчетПоКонфигурации.txt",
+    output_dir="metadata_contracts"
+)
+metadata_success = metadata_gen.generate()
 
 # Генерация форм
-form_gen = FormGenerator("conf_files", "output")
-form_gen.generate()
+form_gen = FormGenerator(
+    conf_dir="conf_files",
+    output_dir="metadata_contracts"
+)
+form_success = form_gen.generate()
+
+print(f"Метаданные: {'✅' if metadata_success else '❌'}")
+print(f"Формы: {'✅' if form_success else '❌'}")
 ```
 
-### Обработка ошибок
+### Кастомная обработка
 
 ```python
-from src.core.metadata_generator import MetadataGenerator
+from core.metadata_generator import MetadataGenerator
+import json
 
-try:
-    generator = MetadataGenerator("report.txt", "output")
-    success = generator.generate()
+# Создание генератора
+generator = MetadataGenerator(
+    report_path="conf_report/ОтчетПоКонфигурации.txt",
+    output_dir="metadata_contracts"
+)
+
+# Парсинг отчета
+objects_data = generator.parse_report()
+
+# Кастомная обработка
+for object_name, object_data in objects_data.items():
+    # Генерация контракта
+    contract = generator.generate_contract(object_data)
     
-    if success:
-        print("Генерация завершена успешно")
-    else:
-        print("Генерация завершена с ошибками")
-        
-    # Вывод логов
-    generator.print_logs()
+    # Кастомная модификация
+    contract["custom_field"] = "custom_value"
     
-except FileNotFoundError:
-    print("Файл отчета не найден")
-except Exception as e:
-    print(f"Неожиданная ошибка: {e}")
+    # Сохранение
+    generator.save_contract(contract, object_name)
 ```
 
----
+## 🛠️ Конфигурация
 
-**Для получения дополнительной информации см. [DEVELOPMENT.md](DEVELOPMENT.md)** 
+### Переменные окружения
+
+```python
+import os
+
+# Отладочный режим
+os.environ["ONEC_DEBUG"] = "1"
+
+# Уровень логирования
+os.environ["ONEC_LOG_LEVEL"] = "INFO"
+```
+
+### Логирование
+
+```python
+from core.metadata_generator import MetadataGenerator
+
+generator = MetadataGenerator("report.txt", "output")
+
+# Добавление логов
+generator.log("info", "Начало обработки")
+generator.log("success", "Объект обработан успешно")
+generator.log("warning", "Предупреждение")
+generator.log("error", "Ошибка обработки")
+generator.log("summary", "Обработано 100 объектов")
+```
+
+## 🚀 Примеры использования
+
+### Ручной запуск без pip
+
+```python
+# При ручной установке используйте относительные импорты
+import sys
+sys.path.append('src')
+
+from core.launcher import ContractGeneratorLauncher
+from core.metadata_generator import MetadataGenerator
+from core.form_generator import FormGenerator
+
+# Создание и запуск
+launcher = ContractGeneratorLauncher()
+success = launcher.generate_contracts()
+```
+
+### Запуск через скрипты
+
+```bash
+# Основной генератор
+python scripts/generate.py
+
+# С параметрами
+python scripts/generate.py --auto \
+  --conf-dir "C:\YourProject\YourConfig\conf_files" \
+  --report-path "C:\YourProject\YourConfig\conf_report\ОтчетПоКонфигурации.txt" \
+  --output-dir "C:\YourProject\YourConfig\metadata_contracts"
+
+# Анализ
+python scripts/analyze.py --action stats
+
+# Тестирование
+python scripts/test.py
+```
+
+### Отладка отдельных компонентов
+
+```python
+# Только генератор метаданных
+from src.core.metadata_generator import MetadataGenerator
+
+generator = MetadataGenerator('output_dir')
+generator.generate('path/to/report.txt')
+
+# Только генератор форм
+from src.core.form_generator import FormGenerator
+
+generator = FormGenerator('output_dir')
+generator.generate('path/to/conf_files')
+```
+
+## 🔗 Связанные документы
+
+- [📖 Руководство по использованию](USAGE.md)
+- [📋 Примеры использования](EXAMPLES.md)
+- [🛠️ Руководство разработчика](DEVELOPMENT.md) 

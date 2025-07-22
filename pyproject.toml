@@ -7,7 +7,7 @@ name = "onec-contract-generator"
 dynamic = ["version"]
 description = "Autonomous system for generating structured JSON contracts from 1C:Enterprise configurations"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 authors = [
     {name = "1C Contract Generator Team", email = "support@onec-contract-generator.dev"}
 ]
@@ -18,7 +18,7 @@ keywords = ["1c", "enterprise", "metadata", "contracts", "generation", "analysis
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.7",

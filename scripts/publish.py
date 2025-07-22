@@ -48,7 +48,6 @@ def check_prerequisites():
         ("python", "Python"),
         ("pip", "pip"),
         ("twine", "twine"),
-        ("build", "build"),
     ]
     
     for tool, name in tools:
@@ -59,6 +58,15 @@ def check_prerequisites():
             print(f"  ❌ {name}: НЕ НАЙДЕНО")
             print(f"    Установите: pip install {tool}")
             return False
+    
+    # Проверяем build как Python модуль
+    try:
+        import build
+        print(f"  ✅ build: найдено")
+    except ImportError:
+        print(f"  ❌ build: НЕ НАЙДЕНО")
+        print(f"    Установите: pip install build")
+        return False
     
     return True
 
